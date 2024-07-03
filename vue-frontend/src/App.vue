@@ -1,35 +1,41 @@
 <template>
-  <span v-if="isAuthenticated"><HomePageVue /></span>
-  <span v-else><LoginPageVue /></span>
+  <div class="app">
+    <span v-if="userAuth.authenticated">
+      <button @click="logout">logout</button>
+      <nav>
+        <RouterLink to="/">Home</RouterLink> | 
+        <RouterLink to="/backend">Backend</RouterLink>
+      </nav>
+      <router-view></router-view>
+    </span>
+    <span v-else>
+      <button @click="login">login</button>
+    </span>
+  </div>
 </template>
 
 <script>
-import KeyCloakService from './security/KeycloakService'
-import HomePageVue from './views/HomePage.vue'
-import LoginPageVue from './views/LoginPage.vue'
-
-console.log("AUTH = " + KeyCloakService.IsAuthenticated())
+import KeyCloakService from './security/KeycloakService';
 
 export default {
-  name: 'App',
-  data() {
-    return {
-      isAuthenticated: KeyCloakService.IsAuthenticated()
+  computed: {
+    userAuth() {
+      return this.$store.state.userAuth;
     }
   },
-  components: {
-    HomePageVue, LoginPageVue
+  methods: {
+    login() {
+      KeyCloakService.CallLogin();
+    },
+    logout() {
+      KeyCloakService.CallLogout();
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  .app {
+    text-align: center;
+  }
 </style>

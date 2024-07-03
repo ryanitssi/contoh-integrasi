@@ -8,36 +8,36 @@ let initOptions = {
 
 const keycloakInstance = new Keycloak(initOptions);
 
-const LogInInit = (loginCallback) => {
-    keycloakInstance.init({ onLoad: 'login-required' })
-        .then((authenticated) => {
-            authenticated ? loginCallback() : alert("non authenticated");
-        })
-        .catch((e) => {
-            console.log('MASUK CATCH')
-            console.log(e);
-            alert('ERROR');
-        })
+const Init = (initCallback) => {
+    keycloakInstance.init({onLoad: 'check-sso', initOptions: {checkLoginIframe: false}}).then((auth) => {
+        if (auth) {
+            initCallback({
+                authenticated: true,
+                token: keycloakInstance.token,
+                username: keycloakInstance.tokenParsed?.preferred_username
+            })
+        } else {
+            initCallback({
+                authenticated: false,
+                token: '',
+                username: ''
+            })
+        }
+    });
 }
 
-const UserName = () =>
-    keycloakInstance?.tokenParsed?.preferred_username;
-  
-const Token = () => keycloakInstance?.token;
+const Login = () => {
+    keycloakInstance.login()
+}
 
-const LogIn = () => keycloakInstance.login();
-
-const LogOut = () => keycloakInstance.logout();
-  
-const Authenticated = () => keycloakInstance.authenticated === undefined ? false : keycloakInstance.authenticated;
+const Logout = () => {
+    keycloakInstance.logout()
+}
 
 const KeyCloakService = {
-    CallLoginInit: LogInInit,
-    CallLogin: LogIn,
-    GetUserName: UserName,
-    GetAccesToken: Token,
-    CallLogOut: LogOut,
-    IsAuthenticated: Authenticated
+    CallInit: Init,
+    CallLogin: Login,
+    CallLogout: Logout
 };
 
 export default KeyCloakService;
