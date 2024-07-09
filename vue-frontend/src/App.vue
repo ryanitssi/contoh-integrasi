@@ -1,16 +1,12 @@
 <template>
   <div class="app">
-    <span v-if="userAuth.authenticated">
-      <button @click="logout">logout</button>
-      <nav>
-        <RouterLink to="/">Home</RouterLink> | 
-        <RouterLink to="/backend">Backend</RouterLink>
-      </nav>
-      <router-view></router-view>
-    </span>
-    <span v-else>
-      <button @click="login">login</button>
-    </span>
+    <nav class="navbar">
+      <RouterLink to="/">Home</RouterLink>
+      <RouterLink to="/backend" v-if="userAuth.authenticated">Backend</RouterLink>
+      <button @click="logout" v-if="userAuth.authenticated">Logout</button>
+    </nav>
+    <router-view></router-view>
+    <div class="login" v-if="!userAuth.authenticated"><button @click="login">Login</button></div>
   </div>
 </template>
 
@@ -35,8 +31,49 @@ export default {
 </script>
 
 <style>
-  .app {
+  .navbar {
+    background-color: #333;
+    overflow: hidden;
+  }
+
+  .navbar a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    font-size: 18px;
+    float: left;
+    text-decoration: none;
+  }
+
+  .navbar button {
+    color: white;
+    background-color: #333;
+    text-align: center;
+    float: right;
+    font-size: 18px;
+    padding: 14px 16px;
+    border: none;
+  }
+
+  .navbar a:hover:not(.active) {
+    background-color: black;
+  }
+
+  .navbar button:hover:not(.active) {
+    background-color: black;
+  }
+
+  .login {
     text-align: center;
   }
 
+  .login button {
+    color: white;
+    background-color: #333;
+    text-align: center;
+    font-size: 18px;
+    padding: 14px 16px;
+    border: none;
+  }
 </style>

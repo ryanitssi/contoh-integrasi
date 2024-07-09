@@ -1,9 +1,13 @@
 <template>
     <div>
-    <h1>HOME</h1>
-    <h3>USER : {{ userAuth.username }}</h3>
-    <h3>TOKEN : {{ userAuth.token }}</h3>
-    <h3>{{ userAuth.tokenParsed }}</h3>
+        <span v-if="userAuth.authenticated">
+            <h2>Selamat datang {{ userAuth.username }}</h2>
+            <h4>Keycloak Token : {{ userAuth.token }}</h4>
+        </span>
+        <span v-else>
+            <h2>Selamat datang di Test Integrasi Keycloak</h2>
+            <h2>Silahkan login terlebih dahulu</h2>
+        </span>
     </div>
 </template>
 
@@ -16,3 +20,6 @@ export default {
     }
 }
 </script>
+
+<style>
+</style>
