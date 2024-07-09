@@ -24,6 +24,7 @@ export default {
       KeyCloakService.CallLogin();
     },
     logout() {
+      this.$router.push('/')
       KeyCloakService.CallLogout();
     }
   }
