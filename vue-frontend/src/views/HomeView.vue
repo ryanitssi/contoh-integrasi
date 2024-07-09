@@ -3,6 +3,7 @@
     <h1>HOME</h1>
     <h3>USER : {{ userAuth.username }}</h3>
     <h3>TOKEN : {{ userAuth.token }}</h3>
+    <h3>{{ userAuth.tokenParsed }}</h3>
     </div>
 </template>
 

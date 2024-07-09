@@ -9,18 +9,20 @@ let initOptions = {
 const keycloakInstance = new Keycloak(initOptions);
 
 const Init = (initCallback) => {
-    keycloakInstance.init({onLoad: 'check-sso', initOptions: {checkLoginIframe: false}}).then((auth) => {
+    keycloakInstance.init({onLoad: 'check-sso', checkLoginIframe: false}).then((auth) => {
         if (auth) {
             initCallback({
                 authenticated: true,
                 token: keycloakInstance.token,
-                username: keycloakInstance.tokenParsed?.preferred_username
+                username: keycloakInstance.tokenParsed?.preferred_username,
+                tokenParsed: keycloakInstance.tokenParsed
             })
         } else {
             initCallback({
                 authenticated: false,
                 token: '',
-                username: ''
+                username: '',
+                tokenParsed: ''
             })
         }
     });
