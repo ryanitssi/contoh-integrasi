@@ -8,23 +8,37 @@ let initOptions = {
 
 const keycloakInstance = new Keycloak(initOptions);
 
-const Init = (initCallback) => {
+const Init = (initCallback, refreshTokenCallback) => {
     keycloakInstance.init({onLoad: 'check-sso', checkLoginIframe: false}).then((auth) => {
         if (auth) {
             initCallback({
                 authenticated: true,
                 token: keycloakInstance.token,
                 username: keycloakInstance.tokenParsed?.preferred_username,
-                tokenParsed: keycloakInstance.tokenParsed
+                tokenParsed: keycloakInstance.tokenParsed,
+                tokenValidity: Math.round((keycloakInstance.tokenParsed.exp + keycloakInstance.timeSkew - new Date().getTime() / 1000)/60) + ' minutes'
             })
         } else {
             initCallback({
                 authenticated: false,
                 token: '',
                 username: '',
-                tokenParsed: ''
+                tokenParsed: '',
+                tokenValidity: ''
             })
         }
+
+        setInterval(() =>{
+            keycloakInstance.updateToken().then((refreshed)=>{
+              if (refreshed) {
+                refreshTokenCallback('Token refreshed'+ refreshed, keycloakInstance.token);
+              } else {
+                refreshTokenCallback('Token not refreshed, valid for '
+                    + Math.round((keycloakInstance.tokenParsed.exp + keycloakInstance.timeSkew - new Date().getTime() / 1000)/60) + ' minutes',
+                    keycloakInstance.token);
+              }
+            });
+        }, 60000)
     });
 }
 

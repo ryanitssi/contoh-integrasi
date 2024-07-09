@@ -14,7 +14,16 @@ const renderApp = (userAuth) => {
     store: authStore,
     render: h => h(App)
   }).$mount('#app')
-  authStore.state.userAuth = userAuth
+
+  authStore.commit('setUserAuth', userAuth)
 }
 
-KeyCloakService.CallInit(renderApp)
+const refreshToken = (tokenValidity, token) => {
+  const payload = {
+    tokenValidity: tokenValidity,
+    token: token
+  }
+  authStore.commit('updateToken', payload)
+}
+
+KeyCloakService.CallInit(renderApp, refreshToken)

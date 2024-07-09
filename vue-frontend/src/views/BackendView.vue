@@ -23,7 +23,7 @@ export default {
         }
     },
     mounted() {
-        const tokenAuth = 'Bearer ' + this.$store.state.userAuth.token
+        const tokenAuth = 'Bearer ' + this.$store.state.token
         axios.get('http://localhost:3000/personel/info', {
             "headers": { "Authorization": tokenAuth }
         })

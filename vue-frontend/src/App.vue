@@ -16,7 +16,7 @@ import KeyCloakService from './security/KeycloakService';
 export default {
   computed: {
     userAuth() {
-      return this.$store.state.userAuth;
+      return this.$store.getters.getUserAuth;
     }
   },
   methods: {
