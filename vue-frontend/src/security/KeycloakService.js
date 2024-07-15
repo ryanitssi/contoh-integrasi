@@ -2,7 +2,7 @@ import Keycloak from 'keycloak-js';
 
 let initOptions = {
     url: 'https://sso.infoglobal.id:8443/',
-    realm: 'nodejs-example', 
+    realm: 'infoglobal', 
     clientId: 'vue-connect'
 }
 
@@ -29,15 +29,17 @@ const Init = (initCallback, refreshTokenCallback) => {
         }
 
         setInterval(() =>{
-            keycloakInstance.updateToken().then((refreshed)=>{
-              if (refreshed) {
-                refreshTokenCallback('Token refreshed'+ refreshed, keycloakInstance.token);
-              } else {
-                refreshTokenCallback('Token not refreshed, valid for '
-                    + Math.round((keycloakInstance.tokenParsed.exp + keycloakInstance.timeSkew - new Date().getTime() / 1000)/60) + ' minutes',
-                    keycloakInstance.token);
-              }
-            });
+            if (keycloakInstance.authenticated) {
+                keycloakInstance.updateToken().then((refreshed)=>{
+                if (refreshed) {
+                    refreshTokenCallback('Token refreshed'+ refreshed, keycloakInstance.token);
+                } else {
+                    refreshTokenCallback('Token not refreshed, valid for '
+                        + Math.round((keycloakInstance.tokenParsed.exp + keycloakInstance.timeSkew - new Date().getTime() / 1000)/60) + ' minutes',
+                        keycloakInstance.token);
+                }
+                });
+            }
         }, 60000)
     });
 }

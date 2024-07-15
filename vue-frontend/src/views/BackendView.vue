@@ -23,15 +23,18 @@ export default {
         }
     },
     mounted() {
-        const tokenAuth = 'Bearer ' + this.$store.state.token
-        axios.get('http://localhost:3000/personel/info', {
-            "headers": { "Authorization": tokenAuth }
-        })
-        .then(response => {
-            if (response.status === 200)
-                this.user = response.data
-        })
-        .catch(error => alert(error))
+        console.log("token = " + this.$store.state.token);
+        if (this.$store.state.token != "") {
+            const tokenAuth = 'Bearer ' + this.$store.state.token
+            axios.get('http://localhost:3000/personel/info', {
+                "headers": { "Authorization": tokenAuth }
+            })
+            .then(response => {
+                if (response.status === 200)
+                    this.user = response.data
+            })
+            .catch(error => alert(error))
+        }
     }
 }
 </script>

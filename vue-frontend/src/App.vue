@@ -24,7 +24,8 @@ export default {
       KeyCloakService.CallLogin();
     },
     logout() {
-      this.$router.push('/')
+      if (this.$router.currentRoute.path !== '/')
+          this.$router.push('/')
       KeyCloakService.CallLogout();
     }
   }

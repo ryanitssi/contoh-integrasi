@@ -2,7 +2,7 @@ const Keycloak = require("keycloak-connect");
 const dotenv = require('dotenv').config();
 
 const config = {
-  "realm": "nodejs-example",
+  "realm": "infoglobal",
   "auth-server-url": "https://sso.infoglobal.id:8443/",
   "ssl-required": "external",
   "resource": "express-connect",
