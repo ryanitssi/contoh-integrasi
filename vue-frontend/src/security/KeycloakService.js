@@ -3,7 +3,7 @@ import Keycloak from 'keycloak-js';
 let initOptions = {
     url: 'https://sso.infoglobal.id:8443/',
     realm: 'infoglobal', 
-    clientId: 'vue-connect'
+    clientId: 'pandapa-frontend'
 }
 
 const keycloakInstance = new Keycloak(initOptions);
